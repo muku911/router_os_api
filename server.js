@@ -1,5 +1,6 @@
 require("dotenv").config();
 const ip = require("./src/utils/ip.js");
+const db = require("./src/config/db.js");
 const express = require("express");
 const bodyParser = require("body-parser");
 
@@ -24,9 +25,18 @@ if (process.env.NODE_ENV === "production") {
 app.use(express.json());
 
 // make route / as welcome message
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+  const myIp = ip.myIP(req);
+  let status = "UNREGISTERED";
+  const ipStatus = await db("im_registered_devices")
+    .where({ address: myIp })
+    .first();
+  if (ipStatus) {
+    status = ipStatus.registered;
+  }
   response.success(res, {
-    ipAddress: ip.myIP(req),
+    ipAddress: myIp,
+    status: status,
   });
 });
 

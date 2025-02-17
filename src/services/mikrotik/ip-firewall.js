@@ -1,4 +1,4 @@
-exports.createFirewall = (client, sub, args) => {
+exports.create = (client, sub, args) => {
   return new Promise((resolve, reject) => {
     client
       .menu(`/ip firewall ${sub}`)
@@ -13,7 +13,7 @@ exports.createFirewall = (client, sub, args) => {
   });
 };
 
-exports.updateFirewall = (client, id, sub, args) => {
+exports.update = (client, id, sub, args) => {
   return new Promise((resolve, reject) => {
     client
       .menu(`/ip firewall ${sub}`)
@@ -29,7 +29,7 @@ exports.updateFirewall = (client, id, sub, args) => {
   });
 };
 
-exports.delFirewall = (client, sub, numbers) => {
+exports.del = (client, sub, numbers) => {
   return new Promise((resolve, reject) => {
     const args = {
       numbers: numbers,
@@ -47,12 +47,27 @@ exports.delFirewall = (client, sub, numbers) => {
   });
 };
 
-exports.getFirewalls = (client, sub, args = {}) => {
+exports.get = (client, sub, args = {}) => {
   return new Promise((resolve, reject) => {
     client
       .menu(`/ip firewall ${sub}`)
       .where(args)
       .get()
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        console.log(err);
+        reject(`Command Error`);
+      });
+  });
+};
+
+exports.resetCounter = (client, sub, args) => {
+  return new Promise((resolve, reject) => {
+    client
+      .menu(`/ip firewall ${sub}`)
+      .exec("reset-counters", args)
       .then((result) => {
         resolve(result);
       })

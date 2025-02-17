@@ -1,4 +1,4 @@
-exports.createQueue = (client, args) => {
+exports.create = (client, args) => {
   return new Promise((resolve, reject) => {
     client
       .menu("/queue simple")
@@ -13,7 +13,7 @@ exports.createQueue = (client, args) => {
   });
 };
 
-exports.updateQueue = (client, id, args) => {
+exports.update = (client, id, args) => {
   return new Promise((resolve, reject) => {
     client
       .menu("/queue simple")
@@ -29,7 +29,7 @@ exports.updateQueue = (client, id, args) => {
   });
 };
 
-exports.delQueue = (client, numbers) => {
+exports.del = (client, numbers) => {
   return new Promise((resolve, reject) => {
     const args = {
       numbers: numbers,
@@ -47,7 +47,7 @@ exports.delQueue = (client, numbers) => {
   });
 };
 
-exports.getQueue = (client, args) => {
+exports.get = (client, args) => {
   return new Promise((resolve, reject) => {
     client
       .menu("/queue simple")

@@ -1,4 +1,4 @@
-exports.createArp = (client, args) => {
+exports.create = (client, args) => {
   return new Promise((resolve, reject) => {
     client
       .menu("/ip arp")
@@ -14,7 +14,7 @@ exports.createArp = (client, args) => {
   });
 };
 
-exports.updateArp = (client, id, args) => {
+exports.update = (client, id, args) => {
   return new Promise((resolve, reject) => {
     client
       .menu("/ip arp")
@@ -31,7 +31,7 @@ exports.updateArp = (client, id, args) => {
   });
 };
 
-exports.delArp = (client, numbers) => {
+exports.del = (client, numbers) => {
   return new Promise((resolve, reject) => {
     const args = {
       numbers: numbers,
@@ -50,7 +50,7 @@ exports.delArp = (client, numbers) => {
   });
 };
 
-exports.getArp = (client, args) => {
+exports.get = (client, args) => {
   return new Promise((resolve, reject) => {
     client
       .menu("/ip arp")

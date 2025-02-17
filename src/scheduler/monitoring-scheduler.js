@@ -25,3 +25,27 @@ cron.schedule("* * * * *", async () => {
     console.log("✅ Scheduled task completed:", taskName);
   }
 });
+
+cron.schedule("0 * * * *", async () => {
+  const taskName = "Get Recap Bandwith - Hourly";
+  console.log("⏰ Running scheduled task:", taskName);
+  try {
+    await monitoringController.hourlyBandwithRecap();
+  } catch (error) {
+    console.error("❌ Error running scheduled task:", taskName, error.message);
+  } finally {
+    console.log("✅ Scheduled task completed:", taskName);
+  }
+});
+
+cron.schedule("0 0 * * *", async () => {
+  const taskName = "Get Recap Bandwith - Daily";
+  console.log("⏰ Running scheduled task:", taskName);
+  try {
+    await monitoringController.dailyBandwithRecap();
+  } catch (error) {
+    console.error("❌ Error running scheduled task:", taskName, error.message);
+  } finally {
+    console.log("✅ Scheduled task completed:", taskName);
+  }
+});

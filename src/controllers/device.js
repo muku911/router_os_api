@@ -18,19 +18,16 @@ exports.makeStatic = async () => {
     const ccr = await mikrotik.connectRouter(mikrotik.router1);
 
     // get dynamic ip address
-    const leaseData = await ipDhcpServerService.getLeases(ccr, {
+    const leaseData = await ipDhcpServerService.get(ccr, {
       server: "NFBS",
       dynamic: "true",
     });
 
     // get address list form firewall
-    const addressLists = await ipFirewallService.getFirewalls(
-      ccr,
-      "address-list"
-    );
+    const addressLists = await ipFirewallService.get(ccr, "address-list");
 
     // get queue
-    const simpleQue = await queueService.getQueue(ccr, {});
+    const simpleQue = await queueService.get(ccr, {});
 
     // process
     for (let index = 0; index < leaseData.length; index++) {
@@ -48,7 +45,7 @@ exports.makeStatic = async () => {
       ) {
         const firewall = leaseAddressList[leaseAddressListIndex];
         console.log("DELETE ADDRESS LIST ", firewall.id);
-        await ipFirewallService.delFirewall(ccr, firewall.id);
+        await ipFirewallService.del(ccr, firewall.id);
       }
 
       // delete previous rules simple queue
@@ -62,7 +59,7 @@ exports.makeStatic = async () => {
       ) {
         const queue = leaseSimpleQueue[leaseSimpleQueueIndex];
         console.log("DELETE SIMPLE QUEUE ", queue.id);
-        queueService.delQueue(ccr, queue.id);
+        queueService.del(ccr, queue.id);
       }
 
       // delete where in db
@@ -120,16 +117,12 @@ exports.makeStatic = async () => {
       };
 
       // add simple que
-      await queueService.createQueue(ccr, addSimpleQueData);
+      await queueService.create(ccr, addSimpleQueData);
       // add addresslist
-      await ipFirewallService.createFirewall(
-        ccr,
-        "address-list",
-        addListAddress
-      );
+      await ipFirewallService.create(ccr, "address-list", addListAddress);
       // Make Static IP
-      await ipDhcpServerService.delLease(ccr, lease.id);
-      await ipDhcpServerService.createLease(ccr, addLeaseData);
+      await ipDhcpServerService.del(ccr, lease.id);
+      await ipDhcpServerService.create(ccr, addLeaseData);
       // Insert DB
       await registeredDeviceModel.insert(insertData);
     }

@@ -1,4 +1,4 @@
-exports.createLease = (client, args) => {
+exports.create = (client, args) => {
   return new Promise((resolve, reject) => {
     client
       .menu("/ip dhcp-server lease")
@@ -13,7 +13,7 @@ exports.createLease = (client, args) => {
   });
 };
 
-exports.updateLease = (client, id, args) => {
+exports.update = (client, id, args) => {
   return new Promise((resolve, reject) => {
     client
       .menu("/ip dhcp-server lease")
@@ -29,7 +29,7 @@ exports.updateLease = (client, id, args) => {
   });
 };
 
-exports.delLease = (client, numbers) => {
+exports.del = (client, numbers) => {
   return new Promise((resolve, reject) => {
     const args = {
       numbers: numbers,
@@ -47,7 +47,7 @@ exports.delLease = (client, numbers) => {
   });
 };
 
-exports.getLeases = (client, args) => {
+exports.get = (client, args) => {
   return new Promise((resolve, reject) => {
     client
       .menu("/ip dhcp-server lease")
