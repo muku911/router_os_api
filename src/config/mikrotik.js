@@ -16,6 +16,11 @@ exports.router2 = new RouterOSClient({
   timeout: process.env.MIKROTIK2_TIMEOUT,
 });
 
+/**
+ * Connect to a Mikrotik router.
+ * @param {RouterOSClient} ROUTER - The RouterOSClient instance to connect.
+ * @returns {Promise<RouterOSClient>} A promise that resolves to the connected RouterOSClient instance, or rejects with an error message.
+ */
 exports.connectRouter = (ROUTER) => {
   return new Promise((resolve, reject) => {
     ROUTER.connect()
@@ -31,6 +36,10 @@ exports.connectRouter = (ROUTER) => {
   });
 };
 
+/**
+ * Disconnect from a Mikrotik router.
+ * @param {RouterOSClient} ROUTER - The RouterOSClient instance to disconnect.
+ */
 exports.disconnectRouter = (ROUTER) => {
   //   console.log("Disconnected from Mikrotik", ROUTER);
   ROUTER.close();

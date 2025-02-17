@@ -1,7 +1,7 @@
-exports.createLease = (client, args) => {
+exports.createFirewall = (client, sub, args) => {
   return new Promise((resolve, reject) => {
     client
-      .menu("/ip dhcp-server lease")
+      .menu(`/ip firewall ${sub}`)
       .exec("add", args)
       .then((result) => {
         resolve(result);
@@ -13,10 +13,10 @@ exports.createLease = (client, args) => {
   });
 };
 
-exports.updateLease = (client, id, args) => {
+exports.updateFirewall = (client, id, sub, args) => {
   return new Promise((resolve, reject) => {
     client
-      .menu("/ip dhcp-server lease")
+      .menu(`/ip firewall ${sub}`)
       .where("id", id)
       .update(args)
       .then((result) => {
@@ -29,13 +29,13 @@ exports.updateLease = (client, id, args) => {
   });
 };
 
-exports.delLease = (client, numbers) => {
+exports.delFirewall = (client, sub, numbers) => {
   return new Promise((resolve, reject) => {
     const args = {
       numbers: numbers,
     };
     client
-      .menu("/ip dhcp-server lease")
+      .menu(`/ip firewall ${sub}`)
       .exec("remove", args)
       .then((result) => {
         resolve(result);
@@ -47,10 +47,10 @@ exports.delLease = (client, numbers) => {
   });
 };
 
-exports.getLeases = (client, args) => {
+exports.getFirewalls = (client, sub, args = {}) => {
   return new Promise((resolve, reject) => {
     client
-      .menu("/ip dhcp-server lease")
+      .menu(`/ip firewall ${sub}`)
       .where(args)
       .get()
       .then((result) => {

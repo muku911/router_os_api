@@ -1,9 +1,10 @@
-exports.createLease = (client, args) => {
+exports.createArp = (client, args) => {
   return new Promise((resolve, reject) => {
     client
-      .menu("/ip dhcp-server lease")
+      .menu("/ip arp")
       .exec("add", args)
       .then((result) => {
+        // console.log("/ip arp add", args);
         resolve(result);
       })
       .catch((err) => {
@@ -13,13 +14,14 @@ exports.createLease = (client, args) => {
   });
 };
 
-exports.updateLease = (client, id, args) => {
+exports.updateArp = (client, id, args) => {
   return new Promise((resolve, reject) => {
     client
-      .menu("/ip dhcp-server lease")
+      .menu("/ip arp")
       .where("id", id)
       .update(args)
       .then((result) => {
+        // console.log("/ip firewall address-list set", args);
         resolve(result);
       })
       .catch((err) => {
@@ -29,15 +31,16 @@ exports.updateLease = (client, id, args) => {
   });
 };
 
-exports.delLease = (client, numbers) => {
+exports.delArp = (client, numbers) => {
   return new Promise((resolve, reject) => {
     const args = {
       numbers: numbers,
     };
     client
-      .menu("/ip dhcp-server lease")
+      .menu("/ip arp")
       .exec("remove", args)
       .then((result) => {
+        // console.log("/ip arp remove", args);
         resolve(result);
       })
       .catch((err) => {
@@ -47,13 +50,14 @@ exports.delLease = (client, numbers) => {
   });
 };
 
-exports.getLeases = (client, args) => {
+exports.getArp = (client, args) => {
   return new Promise((resolve, reject) => {
     client
-      .menu("/ip dhcp-server lease")
+      .menu("/ip arp")
       .where(args)
       .get()
       .then((result) => {
+        // console.log("/ip arp", args);
         resolve(result);
       })
       .catch((err) => {

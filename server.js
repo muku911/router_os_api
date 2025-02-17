@@ -15,10 +15,10 @@ const HOST = process.env.HOST || "http://localhost";
 // require("./src/scheduler")();
 
 if (process.env.NODE_ENV === "production") {
-  // activate Scheduler
-  require("./src/scheduler")();
   // hide log
   console.log = function () {};
+  // activate Scheduler
+  require("./src/scheduler")();
 }
 
 app.use(express.json());
