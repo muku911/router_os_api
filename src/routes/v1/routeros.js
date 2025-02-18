@@ -11,10 +11,11 @@ const deviceController = require("../../controllers/device");
 router.get("/", verifyToken, ipAddressController.hello);
 router.get("/ip-address", verifyToken, ipAddressController.getIpAddress);
 // device
-router.get("/new-device", verifyToken, deviceController.newDevice);
+router.get("/device/new", verifyToken, deviceController.newDevice);
+router.post("/device/remove", verifyToken, deviceController.newDevice);
 // monitoring
-router.get("/monitoring", verifyToken, monitoringController.devices);
-router.get("/hourly", verifyToken, monitoringController.hourly);
-router.get("/daily", verifyToken, monitoringController.daily);
+router.get("/monitoring/device", verifyToken, monitoringController.devices);
+router.get("/monitoring/hourly", verifyToken, monitoringController.hourly);
+router.get("/monitoring/daily", verifyToken, monitoringController.daily);
 
 module.exports = router;

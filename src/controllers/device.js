@@ -9,6 +9,15 @@ const ipFirewallService = require("../services/mikrotik/ip-firewall");
 const ipDhcpServerService = require("../services/mikrotik/ip-dhcp-server");
 const queueService = require("../services/mikrotik/queue");
 
+// New Device Action
+exports.newDevice = async (req, res) => {
+  try {
+    const result = await this.makeStatic();
+    response.success(res, result.data, result.message);
+  } catch (error) {
+    response.error(res, error.message);
+  }
+};
 exports.makeStatic = async () => {
   try {
     const startTime = process.hrtime();
@@ -148,11 +157,54 @@ exports.makeStatic = async () => {
   }
 };
 
-exports.newDevice = async (req, res) => {
+// Remove Device Action
+exports.removeDevice = async (req, res) => {
   try {
-    const result = await this.makeStatic();
+    const { macAddress } = req.body;
+    const startTime = process.hrtime();
+    console.log("Remove Device...");
+
+    // connect to mikrotik
+    const ccr = await mikrotik.connectRouter(mikrotik.router1);
+
+    const leaseData = await ipDhcpServerService.get(ccr, {
+      server: "NFBS",
+      macAddress: macAddress,
+    });
+    const addressList = await ipFirewallService.get(ccr, "address-list", {
+      comment: `MAIN - ${macAddress}`,
+    });
+    const simpleQue = await queueService.get(ccr, {
+      comment: `MAIN - ${macAddress}`,
+    });
+
+    for (let index = 0; index < leaseData.length; index++) {
+      const lease = leaseData[index];
+      // delete data lease from mikrotik
+      ipDhcpServerService.del(ccr, lease.id);
+
+      // Delete on DB
+      db("im_registered_devices")
+        .where({ mac_address: lease.macAddress })
+        .del();
+    }
+
+    // Delete Address List
+    for (let index = 0; index < addressList.length; index++) {
+      const firewall = addressList[index];
+      ipFirewallService.del(ccr, "address-list", firewall.id);
+    }
+
+    // Delete Simple Queue
+    for (let index = 0; index < simpleQue.length; index++) {
+      const queue = simpleQue[index];
+      queueService.del(ccr, queue.id);
+    }
+
     response.success(res, result.data, result.message);
   } catch (error) {
     response.error(res, error.message);
+  } finally {
+    mikrotik.disconnectRouter(mikrotik.router1);
   }
 };
